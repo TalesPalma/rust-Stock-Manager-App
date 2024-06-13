@@ -1,0 +1,1 @@
+# rust-Stock-Manager-App
