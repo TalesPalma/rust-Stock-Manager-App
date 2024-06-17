@@ -25,7 +25,6 @@ fn build_ui(app: &Application) {
         .build();
 
     //action de quando o button é clicado
-
     button.connect_clicked(|button| {
         button.set_label("Hello word action button !!! ");
     });
