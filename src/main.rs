@@ -1,4 +1,5 @@
 use gtk::glib::clone;
+use gtk::glib::property::PropertySet;
 use gtk::{glib, Button, Orientation};
 use gtk::{prelude::*, Application, ApplicationWindow};
 use std::cell::Cell;
@@ -26,38 +27,19 @@ fn build_ui(app: &Application) {
         .margin_bottom(12)
         .build();
 
-    let button_decrement = Button::builder()
-        .label("Decrement")
-        .margin_top(12)
-        .margin_end(12)
-        .margin_start(12)
-        .margin_bottom(12)
-        .build();
-
-    let number = Rc::new(Cell::new(1));
-    //action de quando o button é clicado
-
-    //Button que que incrementa e seta no outro button kkkkk
-    button_increment.connect_clicked(clone!(@weak number,@weak button_decrement =>
+    let number = Rc::new(Cell::new(0));
+    let number_clone = Rc::clone(&number);
+    button_increment.connect_clicked(clone!(@weak number ,@weak button_increment =>
         move |_| {
-            number.set(number.get() + 1 );
-            button_decrement.set_label(&number.get().to_string())
-        }
-    ));
-
-    button_decrement.connect_clicked(clone!(@weak button_increment =>
-    move |_| {
-            number.set(number.get() - 1);
-            button_increment.set_label(&number.get().to_string())
-        }
-    ));
+            number.set(number_clone.get() + 1);
+            button_increment.set_label(&number.get().to_string());
+    }));
 
     //Cria uma box para colocar noss buttons
     let gtk_box = gtk::Box::builder()
         .orientation(Orientation::Vertical)
         .build();
     // Inserindo os button dentro da box
-    gtk_box.append(&button_decrement);
     gtk_box.append(&button_increment);
 
     //build a janela
