@@ -1,7 +1,10 @@
+mod services;
+
 use gtk::glib::clone;
 use gtk::glib::property::PropertySet;
 use gtk::{glib, Button, Orientation};
 use gtk::{prelude::*, Application, ApplicationWindow};
+use services::consume_api;
 use std::cell::Cell;
 use std::rc::Rc;
 
@@ -27,18 +30,15 @@ fn build_ui(app: &Application) {
         .margin_bottom(12)
         .build();
 
-    let number = Rc::new(Cell::new(0));
-    let number_clone = Rc::clone(&number);
-    button_increment.connect_clicked(clone!(@weak number ,@weak button_increment =>
-        move |_| {
-            number.set(number_clone.get() + 1);
-            button_increment.set_label(&number.get().to_string());
-    }));
+    // let service_api = consume_api::get_price_coin().await.unwrap();
 
-    //Cria uma box para colocar noss buttons
+    // button_increment.connect_clicked(move |button| button.set_label(&service_api));
+
+    //Cria uma box para colocar nosso buttons
     let gtk_box = gtk::Box::builder()
         .orientation(Orientation::Vertical)
         .build();
+
     // Inserindo os button dentro da box
     gtk_box.append(&button_increment);
 
