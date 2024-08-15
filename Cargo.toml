@@ -8,4 +8,5 @@ gtk = { version = "0.8.2", package = "gtk4", features = ["v4_12"] }
 reqwest = { version = "0.12", features = ["json"] }
 serde = { version = "1.0.208", features = ["derive"] }
 serde_json = "1.0.125"
+tokio = { version = "1.15.0", features = ["full"] }
 glib = "0.20.1"

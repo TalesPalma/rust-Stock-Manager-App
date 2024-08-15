@@ -10,7 +10,8 @@ use std::rc::Rc;
 
 const APP_ID: &str = "org.gtk_rs.HelloWorld1";
 
-fn main() -> glib::ExitCode {
+#[tokio::main]
+async fn main() -> glib::ExitCode {
     // Create a new application
     let app = Application::builder().application_id(APP_ID).build();
 
@@ -30,9 +31,11 @@ fn build_ui(app: &Application) {
         .margin_bottom(12)
         .build();
 
-    // let service_api = consume_api::get_price_coin().await.unwrap();
-
-    // button_increment.connect_clicked(move |button| button.set_label(&service_api));
+    button_increment.connect_clicked(move |_| {
+        glib::MainContext::default().spawn_local(async move {
+            let service_api = consume_api::get_price_coin().await.unwrap();
+        });
+    });
 
     //Cria uma box para colocar nosso buttons
     let gtk_box = gtk::Box::builder()
