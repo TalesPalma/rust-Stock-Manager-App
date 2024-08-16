@@ -55,12 +55,13 @@ pub async fn get_price_coin() -> Result<String, Box<dyn std::error::Error>> {
         .send()
         .await?;
 
+    let mut converted: DataApi = DataApi { data: vec![] };
     // Check if the response status indicates success.
     if resp.status().is_success() {
         // Await and get the response body as a string.
         let body = resp.text().await?;
         // Deserialize the JSON response into DataApi struct.
-        let converted: DataApi = serde_json::from_str(&body)?;
+        converted = serde_json::from_str(&body)?;
         // Print the price of the cryptocurrency in BTC from the first item in the data vector.
         println!("{}", converted.data[0].quote.btc.price);
     } else {
@@ -70,5 +71,5 @@ pub async fn get_price_coin() -> Result<String, Box<dyn std::error::Error>> {
     }
 
     // Return Ok to indicate that the function completed successfully.
-    Ok("OK".to_string())
+    Ok(converted.data[0].quote.btc.price.to_string())
 }
